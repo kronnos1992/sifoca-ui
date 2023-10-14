@@ -165,7 +165,7 @@ const AddEntrada = () => {
                         autoComplete="current-valor"
                         error={errors.valor && touched.valor}
                       />
-                      <FormControl sx={{ m: 2, maxWidth: "14rem" }}>
+                      <FormControl fullWidth sx={{ m: 2, maxWidth: "14rem" }}>
                         <InputLabel id="area">Área</InputLabel>
                         <Field
                           as={Select}

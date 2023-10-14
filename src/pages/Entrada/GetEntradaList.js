@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Paginacao from "../../templates/Paginacao";
 
 // mui table
 import {
+  Button,
   Paper,
   styled,
   Table,
@@ -19,6 +21,7 @@ import {
 } from "@mui/material";
 
 // import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
+import { Add } from "@mui/icons-material";
 import { getAllEntradas } from "../../redux/actions/entradaActions";
 import MessageError from "../../templates/Error/MessageError";
 import LoadingMessage from "../../templates/Loading/LoadingMessage";
@@ -45,12 +48,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const GetEntradasList = () => {
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [totalValor, setTotalValor] = useState(0); // Variável para armazenar o somatório de valores
 
   const getAllEntradaStore = useSelector((state) => state.getAllEntradaStore);
   const { entradas, loading, error } = getAllEntradaStore;
+
+  const goTo = () => {
+    return navigate("/entradas/add");
+  };
 
   // paginacao
   const [page, setPage] = useState(0);
@@ -93,6 +100,9 @@ const GetEntradasList = () => {
         </div>
       ) : (
         <TableContainer component={Paper}>
+          <Button variant="contained" color="primary" onClick={goTo}>
+            Nova Entrada <Add />
+          </Button>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead>
               <StyledTableRow>
