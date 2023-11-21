@@ -3,14 +3,17 @@ import { movimentoTypes } from "../constants/movimentoTypes";
 
 const baseUrl = process.env.REACT_APP_BASE_URL + "/movimentos/";
 
-export const getAllMovimentos = async (dispatch) => {
+export const getAllMovimentos = async (dispatch, getState) => {
 
     dispatch({
         type: movimentoTypes.REQ_GET_MOVIMENTO,
     });
     try {
         // api request
-        const { data } = await axios.get(baseUrl);
+        const {userLoginStore: {infoUsuario}} = getState(); 
+        const { data } = await axios.get(baseUrl, { 
+            headers:{ authorization: `Bearer ${infoUsuario.Token}`}
+        });
         dispatch({
             type: movimentoTypes.SUCCESS_GET_MOVIMENTO,
             payload: data

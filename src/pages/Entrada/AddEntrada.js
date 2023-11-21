@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardContent,
@@ -7,61 +6,61 @@ import {
   Container,
   FormControl,
   InputLabel,
-  Link,
   MenuItem,
   Paper,
   Select,
   TextField,
 } from "@mui/material";
-//import { useFormik } from "formik";
-import { SaveAs } from "@mui/icons-material";
+import {useNavigate} from 'react-router-dom';
+
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { newEntrada } from "../../redux/actions/entradaActions";
+import { insertEntrada} from "../../redux/actions/entradaActions";
 import { entradaTypes } from "../../redux/constants/entradaTypes";
 import MessageError from "../../templates/Error/MessageError";
 import LoadingMessage from "../../templates/Loading/LoadingMessage";
 import SuccessMessage from "../../templates/Success/SuccessMessage";
-//import { handleLogin } from "../../../redux/actions/authActions";
+
 
 const entradaSchema = Yup.object().shape({
   descricao: Yup.string().required("Campo obrigatório"),
-  operador: Yup.string().required("Campo obrigatório"),
-  area: Yup.string().required("Campo obrigatório"),
   tipoPagamento: Yup.string().required("Campo obrigatório"),
   assinante: Yup.string().required("Campo obrigatório"),
   valor: Yup.number().required("Campo obrigatório"),
+  formaPagamento: Yup.string().required("Campo obrigatório"),
 });
 
 let initialValues = {
   descricao: "",
   valor: 0,
-  operador: "",
-  area: "",
   tipoPagamento: "",
   assinante: "",
+  formaPagamento:""
 };
 
 const AddEntrada = () => {
+  const navigate = useNavigate();
   const newEntradaStore = useSelector((state) => state.newEntradaStore);
   const { loading, error, success } = newEntradaStore;
   const dispatch = useDispatch();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async(values, { setSubmitting }) => {
     initialValues = values;
-    newEntrada(dispatch, initialValues);
-  };
+    dispatch(insertEntrada(values));
+    setSubmitting(false);
+    console.log('Form submitted with values:', values);
+  }
 
   useEffect(() => {
     if (success) {
-      dispatch({ type: entradaTypes.RESET_INSERT_ENTRADA });
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000); // 3000 milissegundos = 3 segundos
+        dispatch({ type: entradaTypes.RESET_INSERT_ENTRADA });
+        setTimeout(() => {
+        navigate("/entradas/");
+      }, 1000);
     }
-  }, [dispatch, success]);
+  }, [dispatch, navigate, success]);
 
   return (
     <Container>
@@ -74,15 +73,10 @@ const AddEntrada = () => {
         )}
         {success && (
           <SuccessMessage variant="success">
-            {`${initialValues.descricao} Entrada registrada com sucesso`}
+            {`${initialValues.descricao} registrado com sucesso`}
           </SuccessMessage>
         )}
-        <Box
-          sx={{ padding: "2%", marginTop: "20%" }}
-          component="div"
-          className="container"
-        >
-          <Card>
+        <Card>
             <CardHeader
               sx={{
                 textAlign: "center",
@@ -90,50 +84,28 @@ const AddEntrada = () => {
               title="FORMULARIO DE REGISTROS DE ENTRADAS"
             />
             <CardContent>
-              <Formik
-                initialValues={initialValues}
-                validationSchema={entradaSchema}
-                onSubmit={handleSubmit}
-              >
+              <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={entradaSchema}>
                 {({ errors, touched }) => (
                   <Form>
-                    <Box sx={{ justifyContent: "space-between" }}>
-                      <Field
-                        as={TextField}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="descricao"
-                        label="Descrição"
-                        type="descricao"
-                        id="descricao"
-                        autoComplete="current-descricao"
-                        error={errors.descricao && touched.descricao}
+                    <Field
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="descricao"
+                      label="Descrição"
+                      type="descricao"
+                      id="descricao"
+                      autoComplete="current-descricao"
+                      error={errors.descricao && touched.descricao}
                       />
                       <ErrorMessage
                         name="descricao"
                         component="div"
                         className="error-message"
                       />
-                      <Field
-                        as={TextField}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="operador"
-                        label="Operador"
-                        type="operador"
-                        id="operador"
-                        autoComplete="current-operador"
-                        error={errors.operador && touched.operador}
-                      />
-                      <ErrorMessage
-                        name="operador"
-                        component="div"
-                        className="error-message"
-                      />
+
                       <Field
                         as={TextField}
                         variant="outlined"
@@ -141,7 +113,7 @@ const AddEntrada = () => {
                         required
                         fullWidth
                         name="assinante"
-                        label="assinante"
+                        label="Assinante"
                         type="assinante"
                         id="assinante"
                         autoComplete="current-assinante"
@@ -152,6 +124,7 @@ const AddEntrada = () => {
                         component="div"
                         className="error-message"
                       />
+
                       <Field
                         as={TextField}
                         variant="outlined"
@@ -165,45 +138,55 @@ const AddEntrada = () => {
                         autoComplete="current-valor"
                         error={errors.valor && touched.valor}
                       />
+                      <ErrorMessage
+                        name="valor"
+                        component="div"
+                        className="error-message"
+                      />
+
                       <FormControl fullWidth sx={{ m: 2, maxWidth: "14rem" }}>
-                        <InputLabel id="area">Área</InputLabel>
+                        <InputLabel id="formaPagamento">FORMA DE PAGAMENTO</InputLabel>
                         <Field
                           as={Select}
-                          name="area"
-                          label="Área"
+                          name="formaPagamento"
+                          label="formaPagamento"
                           variant="outlined"
                           required
-                          type="area"
-                          id="area"
+                          type="formaPagamento"
+                          id="formaPagamento"
+                          autoComplete="current-formaPagamento"
+                          error={errors.formaPagamento && touched.formaPagamento}
                         >
-                          <MenuItem value="">Área</MenuItem>
-                          <MenuItem value={"Restaurante"}>Restaurante</MenuItem>
-                          <MenuItem value={"Recepção"}>Recepção</MenuItem>
+                          <MenuItem value={"CASH"}>CASH</MenuItem>
+                          <MenuItem value={"TRANSFERENCIA"}>TRANFERÊNCIA</MenuItem>
+                          <MenuItem value={"TPA"}>TPA</MenuItem>
                         </Field>
                         <ErrorMessage
-                          name="area"
+                          name="formaPagamento"
                           component="div"
                           className="error-message"
                         />
                       </FormControl>
+
                       <FormControl sx={{ m: 2, minWidth: "14.7rem" }}>
                         <InputLabel id="tipoPagamento">
-                          Tipo de Pagamento
+                          TIPO DE PAGAMENTO
                         </InputLabel>
                         <Field
                           as={Select}
                           name="tipoPagamento"
-                          label="Área"
+                          label="Tipo de Pagamento"
                           variant="outlined"
                           required
                           type="tipoPagamento"
                           id="tipoPagamento"
+                          autoComplete="current-tipoPagamento"
+                          error={errors.tipoPagamento && touched.tipoPagamento}
                         >
-                          <MenuItem value="">Tipo de Pagamento</MenuItem>
-                          <MenuItem value={"Pronto Pagamento"}>
-                            Pronto Pagamento
+                          <MenuItem value={"PRONTO PAGAMENTO"}>
+                            PRONTO PAGAMENTO
                           </MenuItem>
-                          <MenuItem value={"Crédito"}>Crédito</MenuItem>
+                          <MenuItem value={"CRÉDITO"}>CRÉDITO</MenuItem>
                         </Field>
                         <ErrorMessage
                           name="tipoPagamento"
@@ -211,25 +194,14 @@ const AddEntrada = () => {
                           className="error-message"
                         />
                       </FormControl>
-                    </Box>
-                    <Button variant="contained" type="submit" fullWidth>
-                      <Link
-                        style={{
-                          fontStyle: "normal",
-                          textDecorationLine: "none",
-                          color: "#f0f0c0",
-                        }}
-                        to="/"
-                      >
-                        <SaveAs />
-                      </Link>
+                    <Button type="submit" fullWidth>
+                      GUARDAR
                     </Button>
                   </Form>
                 )}
               </Formik>
             </CardContent>
           </Card>
-        </Box>
       </Paper>
     </Container>
   );

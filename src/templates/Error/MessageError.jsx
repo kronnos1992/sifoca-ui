@@ -14,15 +14,14 @@ const MessageError = (props) => {
         const newValue = prevValue + 33.3;
         // Certifique-se de que o valor não ultrapasse 100
         return newValue <= 100 ? newValue : 100;
-      });
+    });
     }, 1000); // Intervalo de 1 segundo
-
         return () => {
             clearInterval(interval)
             clearTimeout(timeout);
         };
     }, []);
-      
+    
     const divStyle = {
         opacity: isVisible ? 1 : 0,
         transition: 'opacity 0.9s ease-in-out', // Você pode ajustar a duração da transição conforme necessário

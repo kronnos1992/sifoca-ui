@@ -99,7 +99,7 @@ const GetSaidasList = () => {
       ) : (
         <TableContainer component={Paper}>
           <Button variant="contained" color="primary" onClick={goTo}>
-            Nova Entrada <Add />
+            Nova Despesa <Add />
           </Button>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead>

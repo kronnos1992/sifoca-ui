@@ -18,6 +18,10 @@ import SidePath from "./paths/SidePath";
 
 import { images as image } from "../assets/utils";
 import "./template.css";
+import { useDispatch, useSelector } from "react-redux";
+import logedAppBarPaths from "./paths/LogedAppBarPaths";
+import { Button, Menu, MenuItem } from "@mui/material";
+import { ExpandMore } from "@mui/icons-material";
 
 const drawerWidth = 300;
 
@@ -54,7 +58,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+  })(({ theme, open }) => ({
   backgroundColor: theme.palette.common.black,
   color: theme.palette.common.white,
   zIndex: theme.zIndex.drawer + 1,
@@ -74,7 +78,7 @@ const AppBar = styled(MuiAppBar, {
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
+  })(({ theme, open }) => ({
   width: drawerWidth,
 
   flexShrink: 0,
@@ -105,6 +109,27 @@ export default function SidebarComponent({ children }) {
     setOpen(false);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+    // inicialização e validação do login
+
+    const userLoginStore = useSelector((state) => state.userLoginStore);
+
+    const { infoUsuario } = userLoginStore;
+
+    const validarSair = () =>{
+    //    dispatch(Logout());
+    }
+    
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -123,6 +148,7 @@ export default function SidebarComponent({ children }) {
           >
             <MenuIcon />
           </IconButton>
+          {/* Logotipo do navbar */}
           <Typography variant="h6" noWrap component="div" paddingTop="0.3rem">
             <Link
               style={{
@@ -133,20 +159,76 @@ export default function SidebarComponent({ children }) {
               to="/"
             >
               <div className="logo-link">
-                <img className="logo" src={image.logo} alt="IMCL" />
+                <img className="logo" src={image.logo} alt="SIFOCA-LOGO" />
               </div>
             </Link>
           </Typography>
-          <Typography variant="h6" noWrap component="div" marginLeft="auto">
-            {appBarPaths.map((route, index) => (
-              <Link key={index} to={route.path} className="appLink">
-                {route.icon}
-                {route.title}
-              </Link>
-            ))}
-          </Typography>
+          {
+            infoUsuario?
+            (
+              <>
+              <Typography variant="h6" noWrap component="div" marginLeft="auto">
+              <Button onClick={handleClick}>
+                {infoUsuario.FullUserName} {' '}
+                <ExpandMore />
+              </Button>
+            </Typography>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {logedAppBarPaths.map((route, index) => (
+                <MenuItem key={index} onClick={handleClose}>
+                  <Link to={route.path} className="appLink">
+                    {route.icon}
+                    {route.title}
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+              </>
+            ):
+            (
+              <Typography variant="h6" noWrap component="div" marginLeft="auto">
+                {appBarPaths.map((route, index) => (
+                  <Link key={index} to={route.path} className="appLink">
+                    {route.icon}
+                    {route.title}
+                  </Link>
+                ))}
+              </Typography>
+            )
+          }
+          {/* {
+            infoUsuario && infoUsuario.usuarioAdmin &&
+            (
+                <div className="dropdown">
+                    <Link to="#admin">
+                        Admin {''} <i className="fad fa-caret-down"> </i>
+                    </Link>
+                    <ul className="dropdown-content">
+                        <li>
+                            <Link to="/dashboard">Dashbord {' '}<i className="fad fa-chart-scatter"></i> </Link>
+                        </li>
+                        <li>
+                            <Link to="/listaprodutos">Produtos {' '}<i className="fal fa-shopping-bag"></i> </Link>
+                        </li>
+                        <li>
+                            <Link to="/listapedidos">Pedidos {' '}<i className="fal fa-clipboard-list-check"></i> </Link>
+                        </li>
+                        <li>
+                            <Link to="/listausuarios">Usuarios {' '}<i className="fal fa-users"></i> </Link>
+                        </li>
+                    </ul>
+                </div>
+            )
+          } */}
         </Toolbar>
       </AppBar>
+
+      {/* Botão de encolher a sidebar*/}
       <Drawer variant="permanent" open={open}>
         <DrawerHeader sx={{ backgroundColor: "black" }}>
           <IconButton className="appButton" onClick={handleDrawerClose}>

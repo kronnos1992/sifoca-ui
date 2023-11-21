@@ -3,14 +3,17 @@ import { saidaTypes } from "../constants/saidaTypes";
 
 const baseUrl = process.env.REACT_APP_BASE_URL + "/movimentos/saida";
 
-export const getAllSaidas = async (dispatch) => {
+export const getAllSaidas = async (dispatch, getState) => {
 
     dispatch({
         type: saidaTypes.REQ_GET_SAIDA,
     });
     try {
         // api request
-        const { data } = await axios.get(baseUrl);
+        const {userLoginStore: {infoUsuario}} = getState(); 
+        const { data } = await axios.get(`${baseUrl}/getall`, { 
+            headers:{ authorization: `Bearer ${infoUsuario.Token}`}
+        });
         dispatch({
             type: saidaTypes.SUCCESS_GET_SAIDA,
             payload: data

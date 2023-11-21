@@ -5,6 +5,19 @@ import thunk from "redux-thunk";
 import * as entrada from "./reducers/entradaReducer.jsx";
 import * as movimento from "./reducers/movimentoReducer.jsx";
 import * as saida from "./reducers/saidaReducer.jsx";
+import * as login from "./reducers/authReducers.jsx";
+
+const initialState={
+  // estado inicial dos componentes de inicializacao.
+
+  usuarioLogin: {
+      infoUsuario: localStorage.getItem('infoUsuario')
+        ?
+        JSON.parse(localStorage.getItem('infoUsuario'))
+        :
+        null
+  }
+};
 
 const reducer = combineReducers({
   // movimentos store
@@ -22,6 +35,11 @@ const reducer = combineReducers({
   // saidas store
   getAllSaidaStore: saida.getAllSaidasReducer,
   newSaidaStore: saida.newSaidaReducer,
+  // deleteCountryStore: country.deleteCountryReducer,
+  // updateCountryStore: country.updateCountryReducer,
+
+  // auth store
+  userLoginStore: login.loginReducer,
   // deleteCountryStore: country.deleteCountryReducer,
   // updateCountryStore: country.updateCountryReducer,
 });

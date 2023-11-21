@@ -63,7 +63,7 @@ export function newEntradaReducer (state = initialState, action) {
             return { loading: true }
 
         case entradaTypes.SUCCESS_INSERT_ENTRADA:
-            //state.push(action.payload)
+            state.push(action.payload)
             return {
                 ...state,
                 success: true,
@@ -79,7 +79,7 @@ export function newEntradaReducer (state = initialState, action) {
         case entradaTypes.RESET_INSERT_ENTRADA:
             return {
                 ...state,
-                entradas: []
+                initialState
             }
 
         default:

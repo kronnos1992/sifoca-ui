@@ -1,15 +1,10 @@
-import { Info, Login } from "@mui/icons-material";
+import { Login } from "@mui/icons-material";
 
 const appBarPaths = [
   {
     icon: <Login />,
-    title: "Login",
+    title: "Logar-se",
     path: "/auth/login",
-  },
-  {
-    icon: <Info />,
-    title: "Sobre",
-    path: "/about",
   },
 ];
 export default appBarPaths;
