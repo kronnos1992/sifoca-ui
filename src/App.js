@@ -1,9 +1,8 @@
 import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { AddSaida, Entrada, Inicio, Movimento, Saida } from "./pages";
-import AddEntrada from "./pages/Entrada/AddEntrada";
+import {Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { AddEntrada, AddSaida, Entrada, Inicio, Login, Movimento, Saida, SignUp, Users } from "./pages";
 import SidebarComponent from "./templates/SidebarComponent";
-import NewLogin from "./pages/Auth/NewLogin";
+
 
 function App() {
   return (
@@ -17,7 +16,9 @@ function App() {
             <Route path="/entradas/add" element={<AddEntrada />} />
             <Route path="/saidas" element={<Saida />} />
             <Route path="/saidas/add" element={<AddSaida />} />
-            <Route path="/auth/login"element={<NewLogin />}></Route>
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/signup" element={<SignUp />} />
+            <Route path="/auth/users" element={<Users />} />
           </Routes>
         </SidebarComponent>
       </Router>

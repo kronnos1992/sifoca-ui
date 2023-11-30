@@ -19,17 +19,13 @@ const validationSchema = Yup.object().shape({
     password: "",
   };
 
-const NewLogin = (props) => {
+const LoginPage = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const userLoginStore = useSelector((state) => state.userLoginStore);
     const {infoUsuario, loading, error } = userLoginStore;
-
-    //const redirect = props.location && props.location.search
-    //    ? props.location.search.split('=')[1]
-    //    : '/';
-
+    
     const handleSubmit = (values, { setSubmitting }) => {
         initialValues = values;
         dispatch(handleLogin(values.username, values.password));
@@ -41,8 +37,8 @@ const NewLogin = (props) => {
         if (infoUsuario) {
             //props.history.push(redirect);
             setTimeout(() => {
-            return navigate("/");
-            }, 1000); // 3000 milissegundos = 3 segundos
+                return navigate("/");
+            }, 1000); // 1000 milissegundos = 3 segundos
         }
     }, [infoUsuario, navigate, props.history])
 
@@ -109,4 +105,4 @@ const NewLogin = (props) => {
         </Container>
   );
 }
-export default NewLogin;
+export default LoginPage;

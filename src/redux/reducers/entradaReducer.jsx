@@ -1,7 +1,8 @@
 import { entradaTypes } from "../constants/entradaTypes";
 
 const initialState = {
-    entradas: []
+    entradas: [],
+    success: false
 }
 
 export function getAllEntradasReducer (state = initialState, action) { 
@@ -63,9 +64,9 @@ export function newEntradaReducer (state = initialState, action) {
             return { loading: true }
 
         case entradaTypes.SUCCESS_INSERT_ENTRADA:
-            state.push(action.payload)
             return {
                 ...state,
+                entradas: [state.entradas, action.payload],
                 success: true,
                 loading: false,
             }

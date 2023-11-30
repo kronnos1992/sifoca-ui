@@ -11,17 +11,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SubMenu from "./Submenu";
 import appBarPaths from "./paths/AppBarPath";
 import SidePath from "./paths/SidePath";
 
 import { images as image } from "../assets/utils";
 import "./template.css";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import logedAppBarPaths from "./paths/LogedAppBarPaths";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
+import {handleLogout} from "../redux/actions/authActions"
 
 const drawerWidth = 300;
 
@@ -99,6 +100,8 @@ const Drawer = styled(MuiDrawer, {
 
 export default function SidebarComponent({ children }) {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -119,16 +122,25 @@ export default function SidebarComponent({ children }) {
     setAnchorEl(null);
   };
 
+  const handleOut = (path) => {
+    if (path === '#Logout') {
+      setTimeout(() => {
+        dispatch(handleLogout())
+        window.location.reload();
+        navigate("/auth/login");
+      }, 1000);
+      // Por exemplo, limpar o token de autenticação, redirecionar para a página de login, etc.
+      console.log('Usuário deslogado');
+    } else {
+      // Lógica para redirecionar para outras rotas, se necessário
+      console.log(`Redirecionando para ${path}`);
+    }
+  }
     // inicialização e validação do login
 
     const userLoginStore = useSelector((state) => state.userLoginStore);
 
-    const { infoUsuario } = userLoginStore;
-
-    const validarSair = () =>{
-    //    dispatch(Logout());
-    }
-    
+    const { infoUsuario } = userLoginStore;   
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -180,13 +192,22 @@ export default function SidebarComponent({ children }) {
               onClose={handleClose}
             >
               {logedAppBarPaths.map((route, index) => (
-                <MenuItem key={index} onClick={handleClose}>
-                  <Link to={route.path} className="appLink">
-                    {route.icon}
-                    {route.title}
-                  </Link>
+                <MenuItem key={index} onClick={() => handleOut(route.path)}>
+                  {route.path === '#Logout' ? (
+                    // Se for o link de logout, não use um Link do React Router, apenas exiba o texto
+                    <span className="appLink">
+                      {route.icon}
+                      {route.title}
+                    </span>
+                  ) : (
+                    <Link to={route.path} className="appLink">
+                      {route.icon}
+                      {route.title}
+                    </Link>
+                  )}
                 </MenuItem>
               ))}
+              <Link to="#Logout"onClick={handleOut}></Link>
             </Menu>
               </>
             ):

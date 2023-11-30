@@ -14,7 +14,7 @@ import {
 import {useNavigate} from 'react-router-dom';
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { insertEntrada} from "../../redux/actions/entradaActions";
@@ -22,7 +22,6 @@ import { entradaTypes } from "../../redux/constants/entradaTypes";
 import MessageError from "../../templates/Error/MessageError";
 import LoadingMessage from "../../templates/Loading/LoadingMessage";
 import SuccessMessage from "../../templates/Success/SuccessMessage";
-
 
 const entradaSchema = Yup.object().shape({
   descricao: Yup.string().required("Campo obrigatório"),
@@ -46,19 +45,22 @@ const AddEntrada = () => {
   const { loading, error, success } = newEntradaStore;
   const dispatch = useDispatch();
 
-  const handleSubmit = async(values, { setSubmitting }) => {
-    initialValues = values;
+  const [formValues, setFormValues] = useState(initialValues);
+
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     dispatch(insertEntrada(values));
     setSubmitting(false);
+    setTimeout(() => {
+      navigate("/entradas/");
+    }, 2000);
+    setFormValues(initialValues); // Define os valores do formulário como vazios novamente
     console.log('Form submitted with values:', values);
-  }
+  };
 
   useEffect(() => {
     if (success) {
-        dispatch({ type: entradaTypes.RESET_INSERT_ENTRADA });
-        setTimeout(() => {
-        navigate("/entradas/");
-      }, 1000);
+      dispatch({ type: entradaTypes.RESET_INSERT_ENTRADA }); 
+      setFormValues(initialValues); // Define os valores do formulário como vazios após o sucesso
     }
   }, [dispatch, navigate, success]);
 
@@ -201,7 +203,7 @@ const AddEntrada = () => {
                 )}
               </Formik>
             </CardContent>
-          </Card>
+        </Card>
       </Paper>
     </Container>
   );

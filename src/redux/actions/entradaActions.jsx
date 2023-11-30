@@ -10,7 +10,7 @@ export const getAllEntradas = (dataInicial, dataFinal) => async (dispatch, getSt
     // api request
     const {userLoginStore: {infoUsuario}} = getState(); 
     try {
-        const { data } = await axios.get(`${baseUrl}/getall`, { 
+        const { data } = await axios.get(`${baseUrl}/getbyop`, { 
             params:{dataInicial, dataFinal},
             headers:{ authorization: `Bearer ${infoUsuario.Token}`}
         });

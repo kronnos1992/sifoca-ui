@@ -31,27 +31,23 @@ export const handleLogin = (username, password) => async(dispatch) =>{
         })
     }
 }
-
-export const Registro = (nome, email, password) => async(dispatch) =>{
+export const handleSignup = (usuario) => async(dispatch, getState) =>{
     
     dispatch({
         type: authTypes.USUARIO_REGISTRO_REQ,
-        payload: {nome, email, password}
+        payload: usuario
     });
 
     try {
-        const { data } = await axios.post('/api/usuarios/registro', {nome, email, password});
+        const {userLoginStore: {infoUsuario}} = getState(); 
+        const { data } = await axios.post(`${baseUrl}signup`, usuario, { 
+            headers:{ authorization: `Bearer ${infoUsuario.Token}`}
+        });
         dispatch({
             type: authTypes.USUARIO_REGISTRO_SUCESSO,
             payload: data
         });
-        // atualizar o store depois de se cadastrar
-        dispatch({
-            type: authTypes.USUARIO_LOGIN_SUCESSO,
-            payload: data
-        });
-        localStorage.setItem("infoUsuario", JSON.stringify(data));
-        
+        localStorage.setItem("infoUsuario", JSON.stringify(data));        
     } catch (error) {
         // buscar o error apartir do backend
         dispatch({
@@ -96,7 +92,6 @@ export const detalheUsuario = (idUsuario) => async(dispatch, getState) =>{
         })
     }
 }
-
 export const atualizarPerfilUsuario = (usuario) => async (dispatch, getState) =>{
     
     dispatch({
@@ -137,8 +132,34 @@ export const atualizarPerfilUsuario = (usuario) => async (dispatch, getState) =>
     }
 
 }
-
-export const Logout = () =>(dispatch) =>{
+export const getAllUsers = () => async (dispatch, getState) => {
+    dispatch({
+        type: authTypes.USUARIO_GET_REQ,
+    });
+    // api request
+    const {userLoginStore: {infoUsuario}} = getState(); 
+    try {
+        const { data } = await axios.get(`${baseUrl}all`, { 
+            //params:{dataInicial, dataFinal},
+            headers:{ authorization: `Bearer ${infoUsuario.Token}`}
+        });
+        dispatch({
+            type: authTypes.USUARIO_GET_SUCESSO,
+            payload: data
+        });
+        
+    } catch (error) {
+        const message = 
+        error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message
+        dispatch({
+            type: authTypes.USUARIO_GET_FALHOU,
+            payload: message
+        });
+    }
+}
+export const handleLogout = () =>(dispatch) =>{
     localStorage.removeItem('infoUsuario');
     dispatch({ type: authTypes.USUARIO_SAIR  });
 }

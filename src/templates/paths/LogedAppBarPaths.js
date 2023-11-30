@@ -1,4 +1,4 @@
-import { History, Info, Logout, VerifiedUserRounded } from "@mui/icons-material";
+import { History, Info, Logout } from "@mui/icons-material";
 
 const logedAppBarPaths = [
     {
@@ -14,7 +14,7 @@ const logedAppBarPaths = [
     {
         icon: <Logout />,
         title: "Sair",
-        path: "auth/logout",
+        path: "#Logout"
     },
 ];
 export default logedAppBarPaths;

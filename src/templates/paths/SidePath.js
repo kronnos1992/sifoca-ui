@@ -1,14 +1,17 @@
 import {
   AccountBalance,
-  InsertChart,
+  Add,
+  Balance,
   InsightsTwoTone,
+  List,
   Outbound,
+  SupervisedUserCircle,
 } from "@mui/icons-material";
 
 const SidePath = [
   {
     title: "MOVIMENTOS",
-    icon: <InsertChart />,
+    icon: <Balance />,
     subNav: [
       {
         title: "Geral",
@@ -27,5 +30,21 @@ const SidePath = [
       },
     ],
   },
+  {
+    title: "USUÁRIOS",
+    icon: <SupervisedUserCircle />,
+    subNav: [
+      {
+        title: "Exibir Todos",
+        icon: <List />,
+        path: "/auth/users",
+      },
+      {
+        title: "Inserir",
+        icon: <Add />,
+        path: "/auth/signup",
+      },
+    ],
+  }
 ];
 export default SidePath;

@@ -7,17 +7,6 @@ import * as movimento from "./reducers/movimentoReducer.jsx";
 import * as saida from "./reducers/saidaReducer.jsx";
 import * as login from "./reducers/authReducers.jsx";
 
-const initialState={
-  // estado inicial dos componentes de inicializacao.
-
-  usuarioLogin: {
-      infoUsuario: localStorage.getItem('infoUsuario')
-        ?
-        JSON.parse(localStorage.getItem('infoUsuario'))
-        :
-        null
-  }
-};
 
 const reducer = combineReducers({
   // movimentos store
@@ -40,7 +29,8 @@ const reducer = combineReducers({
 
   // auth store
   userLoginStore: login.loginReducer,
-  // deleteCountryStore: country.deleteCountryReducer,
+  addUserStore: login.registroReducer,
+  getAllUserStore: login.getAllUsersReducer
   // updateCountryStore: country.updateCountryReducer,
 });
 

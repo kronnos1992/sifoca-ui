@@ -108,11 +108,11 @@ const GetEntradasList = () => {
   return (
     <>
     {error ? (
-      <div style={{ maxWidth: "24rem", padding: "2rem" }}>
-      <MessageError variant="danger">{error}</MessageError>
+      <div style={{ maxWidth: "50rem", padding: "2rem" }}>
+        <MessageError variant="danger">Erro de autenticação. {error}</MessageError>
       </div>
       ) : loading ? (
-        <div style={{ maxWidth: "24rem", marginLeft: "50%" }}>
+        <div style={{ maxWidth: "50rem", marginLeft: "50%" }}>
         <LoadingMessage></LoadingMessage>
         </div>
         ) : (
@@ -134,41 +134,41 @@ const GetEntradasList = () => {
                 {({ errors, touched }) => (
                   <Form >
                     <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    name="dataInicial"
-                    label="Data Inicial"
-                    type="date"
-                    id="dataInicial"
-                    autoComplete="current-dataInicial"
-                    sx={{margin:"0.1rem"}}
-                    error={errors.dataInicial && touched.dataInicial}
-                    />
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      name="dataInicial"
+                      label="Data Inicial"
+                      type="date"
+                      id="dataInicial"
+                      autoComplete="current-dataInicial"
+                      sx={{margin:"0.1rem"}}
+                      error={errors.dataInicial && touched.dataInicial}
+                      />
                     <ErrorMessage
-                    name="dataInicial"
-                    component="div"
-                    className="error-message"
+                      name="dataInicial"
+                      component="div"
+                      className="error-message"
                     />
                 
                     <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    name="dataFinal"
-                    label="Data Final"
-                    type="date"
-                    id="dataFinal"
-                    sx={{margin:"0.1rem"}}
-                    autoComplete="current-dataFinal"
-                    error={errors.dataFinal && touched.dataFinal}
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      name="dataFinal"
+                      label="Data Final"
+                      type="date"
+                      id="dataFinal"
+                      sx={{margin:"0.1rem"}}
+                      autoComplete="current-dataFinal"
+                      error={errors.dataFinal && touched.dataFinal}
                     />
                     <ErrorMessage
-                    name="dataFinal"
-                    component="div"
-                    className="error-message"
+                      name="dataFinal"
+                      component="div"
+                      className="error-message"
                     />
                 
                     <Button type="submit" variant="contained" sx={{minHeight:"3.5rem"}}>
@@ -255,14 +255,14 @@ const GetEntradasList = () => {
                   </TableFooter>
                   </Table>
                   </TableContainer>
-                  )}
-                  <Paper elevation={3}>
-                  <Typography variant="h6" align="center">
-                  Total Entradas: {totalValor}
-                  </Typography>
-                  </Paper>
-                  </>
-                  );
-                };
-                export default GetEntradasList;
+        )}
+      <Paper elevation={3}>
+        <Typography variant="h6" align="center">
+        Total Entradas: {totalValor}
+        </Typography>
+      </Paper>
+  </>
+  );
+};
+export default GetEntradasList;
                 
