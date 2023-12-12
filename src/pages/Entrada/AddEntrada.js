@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Card,
   CardContent,
@@ -22,6 +23,7 @@ import { entradaTypes } from "../../redux/constants/entradaTypes";
 import MessageError from "../../templates/Error/MessageError";
 import LoadingMessage from "../../templates/Loading/LoadingMessage";
 import SuccessMessage from "../../templates/Success/SuccessMessage";
+import { CurrencyExchange } from "@mui/icons-material";
 
 const entradaSchema = Yup.object().shape({
   descricao: Yup.string().required("Campo obrigatório"),
@@ -66,7 +68,7 @@ const AddEntrada = () => {
 
   return (
     <Container>
-      <Paper component="div" elevation={2} className="offset-lg-3 col-lg-8">
+      <Paper sx={{marginTop:"6rem"}} component="div" elevation={2} className="offset-lg-3 col-lg-8">
         {loading && <LoadingMessage></LoadingMessage>}
         {error && (
           <MessageError variant="danger">
@@ -79,6 +81,9 @@ const AddEntrada = () => {
           </SuccessMessage>
         )}
         <Card>
+            <Avatar  sx={{ margin:"1rem", marginLeft:"45%",width: 100, height: 100 }}>
+                <CurrencyExchange sx={{width: 80, height: 80}} />
+            </Avatar>
             <CardHeader
               sx={{
                 textAlign: "center",
@@ -86,7 +91,11 @@ const AddEntrada = () => {
               title="FORMULARIO DE REGISTROS DE ENTRADAS"
             />
             <CardContent>
-              <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={entradaSchema}>
+              <Formik 
+                initialValues={initialValues}
+                validationSchema={entradaSchema}
+                onSubmit={handleSubmit} 
+                >
                 {({ errors, touched }) => (
                   <Form>
                     <Field
@@ -134,8 +143,8 @@ const AddEntrada = () => {
                         required
                         name="valor"
                         label="Valor"
-                        type="valor"
-                        id="valor"
+                        type="number"
+                        id="Valor"
                         sx={{ maxWidth: "8rem" }}
                         autoComplete="current-valor"
                         error={errors.valor && touched.valor}
@@ -196,7 +205,7 @@ const AddEntrada = () => {
                           className="error-message"
                         />
                       </FormControl>
-                    <Button type="submit" fullWidth>
+                    <Button type="submit" title='GUARDAR' sx={{backgroundColor:"silver", marginTop:"1rem"}} variant='contained'fullWidth>
                       GUARDAR
                     </Button>
                   </Form>

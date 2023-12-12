@@ -7,9 +7,9 @@ import MessageError from '../../templates/Error/MessageError';
 import LoadingMessage from '../../templates/Loading/LoadingMessage';
 import SuccessMessage from '../../templates/Success/SuccessMessage';
 import { handleSignup } from '../../redux/actions/authActions';
-import { Looks, SupervisedUserCircle} from '@mui/icons-material';
+import {SupervisedUserCircle, ViewListTwoTone} from '@mui/icons-material';
 import { authTypes } from '../../redux/constants/authTypes';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const validationSchema = Yup.object().shape({
@@ -44,7 +44,8 @@ function SignUpPage() {
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     dispatch(handleSignup(values));
     setSubmitting(false);
-    setFormValues(resetForm); // Define os valores do formulário como vazios novamente
+    resetForm();
+    setFormValues(); // Define os valores do formulário como vazios novamente
     console.log('Form submitted with values:', values);
   };
 
@@ -59,7 +60,7 @@ function SignUpPage() {
       dispatch({ type: authTypes.USUARIO_REGISTRO_RESET }); 
       setFormValues(initialValues); // Define os valores do formulário como vazios após o sucesso
     }
-  }, [dispatch, success]);
+  }, [dispatch, setFormValues, success]);
   
   
   return (
@@ -78,164 +79,164 @@ function SignUpPage() {
           </SuccessMessage>
         )}
         <Card>
-        <Avatar  sx={{ margin:"1rem", marginLeft:"45%",width: 100, height: 100 }}>
-            <SupervisedUserCircle sx={{width: 100, height: 100}} />
-        </Avatar>
-        <CardHeader
+          <Avatar  sx={{ margin:"1rem", marginLeft:"45%",width: 100, height: 100 }}>
+              <SupervisedUserCircle sx={{width: 100, height: 100}} />
+          </Avatar>
+          <CardHeader
           sx={{
             textAlign: "center",
           }}
           title="FORMULARIO DE REGISTROS DE USUÁRIOS"
-        />
-        <CardContent>
-          <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
-            {({ errors, touched }) => (
-              <Form>
-                <Field
-                  as={TextField}
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="NomeCompleto"
-                  label="Nome Completo"
-                  type="NomeCompleto"
-                  id="NomeCompleto"
-                  autoComplete="current-NomeCompleto"
-                  error={errors.NomeCompleto && touched.NomeCompleto}
-                  />
-                  <ErrorMessage
+          />
+          <CardContent>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema}>
+              {({ errors, touched }) => (
+                <Form>
+                  <Field
+                    as={TextField}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
                     name="NomeCompleto"
-                    component="div"
-                    className="error-message"
-                />
-                <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="Email"
-                    label="Email"
-                    type="email"
-                    id="Email"
-                    sx={{ maxWidth: "23rem"}}
-                    autoComplete="current-Email"
-                    error={errors.Email && touched.Email}
-                  />
-                  <ErrorMessage
-                    name="Email"
-                    component="div"
-                    className="error-message"
-                  />
-                  <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="Telefone"
-                    label="Telefone"
-                    type="Telefone"
-                    id="Telefone"
-                    sx={{ maxWidth: "22.8rem", marginLeft:"0.1rem"}}
-                    autoComplete="current-Telefone"
-                    error={errors.Telefone && touched.Telefone}
-                  />
-                  <ErrorMessage
-                    name="Telefone"
-                    component="div"
-                    className="error-message"
-                  />
-                  <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="Usuario"
-                    label="Usuario"
-                    type="Usuario"
-                    id="Usuario"
-                    autoComplete="current-Usuario"
-                    error={errors.Usuario && touched.Usuario}
-                  />
-                  <ErrorMessage
-                    name="Usuario"
-                    component="div"
-                    className="error-message"
-                  />
-                  <Field
-                    as={TextField}
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="Senha"
-                    label="Senha"
-                    type="password"
-                    id="Senha"
-                    autoComplete="current-Senha"
-                    error={errors.Senha && touched.Senha}
-                  />
-                  <ErrorMessage
-                    name="Senha"
-                    component="div"
-                    className="error-message"
-                  />
-                  <FormControl fullWidth sx={{ maxWidth: "14rem" }}>
-                    <InputLabel id="Departamento">DEPARTAMENTO</InputLabel>
-                    <Field
-                      as={Select}
-                      name="Departamento"
-                      label="Departamento"
-                      variant="outlined"
-                      required
-                      sx={{margin:"0.1rem", minWidth:"18rem"}}
-                      type="Departamento"
-                      id="Departamento"
-                      autoComplete="current-Departamento"
-                      error={errors.Departamento && touched.Departamento}
-                    >
-                      <MenuItem value={"RECEPÇÃO"}>RECEPÇÃO</MenuItem>
-                      <MenuItem value={"RESTAURANTE"}>RESTAURANTE</MenuItem>
-                      {/* <MenuItem value={""}>TPA</MenuItem> */}
-                    </Field>
+                    label="Nome Completo"
+                    type="NomeCompleto"
+                    id="NomeCompleto"
+                    autoComplete="current-NomeCompleto"
+                    error={errors.NomeCompleto && touched.NomeCompleto}
+                    />
                     <ErrorMessage
-                      name="Departamento"
+                      name="NomeCompleto"
+                      component="div"
+                      className="error-message"
+                  />
+                  <Field
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="Email"
+                      label="Email"
+                      type="email"
+                      id="Email"
+                      sx={{ maxWidth: "23rem"}}
+                      autoComplete="current-Email"
+                      error={errors.Email && touched.Email}
+                    />
+                    <ErrorMessage
+                      name="Email"
                       component="div"
                       className="error-message"
                     />
-                  </FormControl>
-                  <Field
-                        as={TextField}
+                    <Field
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="Telefone"
+                      label="Telefone"
+                      type="Telefone"
+                      id="Telefone"
+                      sx={{ maxWidth: "22.8rem", marginLeft:"0.1rem"}}
+                      autoComplete="current-Telefone"
+                      error={errors.Telefone && touched.Telefone}
+                    />
+                    <ErrorMessage
+                      name="Telefone"
+                      component="div"
+                      className="error-message"
+                    />
+                    <Field
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="Usuario"
+                      label="Usuario"
+                      type="Usuario"
+                      id="Usuario"
+                      autoComplete="current-Usuario"
+                      error={errors.Usuario && touched.Usuario}
+                    />
+                    <ErrorMessage
+                      name="Usuario"
+                      component="div"
+                      className="error-message"
+                    />
+                    <Field
+                      as={TextField}
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="Senha"
+                      label="Senha"
+                      type="password"
+                      id="Senha"
+                      autoComplete="current-Senha"
+                      error={errors.Senha && touched.Senha}
+                    />
+                    <ErrorMessage
+                      name="Senha"
+                      component="div"
+                      className="error-message"
+                    />
+                    <FormControl fullWidth sx={{ maxWidth: "14rem" }}>
+                      <InputLabel id="Departamento">DEPARTAMENTO</InputLabel>
+                      <Field
+                        as={Select}
+                        name="Departamento"
+                        label="Departamento"
                         variant="outlined"
-                        margin="normal"
                         required
-                        name="DataNascimento"
-                        label="DATA DE NASCIMENTO"
-                        id="DataNascimento"
-                        type="date"
-                        sx={{margin:"0.1rem", minWidth:"40%", marginLeft:"5rem"}}
-                        autoComplete="current-DataNascimento"
-                        error={errors.DataNascimento && touched.DataNascimento}
-                        />
-                        <ErrorMessage
-                        name="DataNascimento"
+                        sx={{margin:"0.1rem", minWidth:"18rem"}}
+                        type="Departamento"
+                        id="Departamento"
+                        autoComplete="current-Departamento"
+                        error={errors.Departamento && touched.Departamento}
+                      >
+                        <MenuItem value={"RECEPÇÃO"}>RECEPÇÃO</MenuItem>
+                        <MenuItem value={"RESTAURANTE"}>RESTAURANTE</MenuItem>
+                        {/* <MenuItem value={""}>TPA</MenuItem> */}
+                      </Field>
+                      <ErrorMessage
+                        name="Departamento"
                         component="div"
                         className="error-message"
-                    />
-                <Button title='GUARDAR' sx={{backgroundColor:"silver", marginTop:"1rem"}} variant='contained' type="submit" fullWidth>
-                  GUARDAR
-                </Button>
-              </Form>
-            )}
-          </Formik>
-          <Button sx={{backgroundColor:"silver", marginTop:"1rem"}} variant='contained' type="button" onClick={goTo}>
-            VER LISTA <Looks />
-          </Button>
-        </CardContent>
-      </Card>
+                      />
+                    </FormControl>
+                    <Field
+                          as={TextField}
+                          variant="outlined"
+                          margin="normal"
+                          required
+                          name="DataNascimento"
+                          label="DATA DE NASCIMENTO"
+                          id="DataNascimento"
+                          type="date"
+                          sx={{margin:"0.1rem", minWidth:"40%", marginLeft:"5rem"}}
+                          autoComplete="current-DataNascimento"
+                          error={errors.DataNascimento && touched.DataNascimento}
+                          />
+                          <ErrorMessage
+                          name="DataNascimento"
+                          component="div"
+                          className="error-message"
+                      />
+                  <Button title='GUARDAR' sx={{backgroundColor:"silver", marginTop:"1rem"}} variant='contained' type="submit" fullWidth>
+                    GUARDAR
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+            <Button sx={{backgroundColor:"silver", marginTop:"1rem"}} variant='contained' type="button" onClick={goTo}>
+              LISTA DE USUÁRIOS <ViewListTwoTone/>
+            </Button>
+          </CardContent>
+        </Card>
     </Paper>
   </Container>
   )

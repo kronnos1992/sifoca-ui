@@ -1,4 +1,3 @@
-import { SaveSharp } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -6,16 +5,11 @@ import {
   CardContent,
   CardHeader,
   Container,
-  FormControl,
-  InputLabel,
-  Link,
-  MenuItem,
   Paper,
-  Select,
   TextField,
 } from "@mui/material";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { newSaida } from "../../redux/actions/saidaActions";
@@ -26,34 +20,41 @@ import SuccessMessage from "../../templates/Success/SuccessMessage";
 //import { handleLogin } from "../../../redux/actions/authActions";
 
 const saidaSchema = Yup.object().shape({
-  descricao: Yup.string().required("Campo obrigatório"),
-  operador: Yup.string().required("Campo obrigatório"),
-  area: Yup.string().required("Campo obrigatório"),
-  valor: Yup.number().required("Campo obrigatório"),
+  Descricao: Yup.string().required("Campo obrigatório"),
+  Beneficiario: Yup.string().required("Campo obrigatório"),
+  Valor: Yup.number().required("Campo obrigatório"),
 });
 
 let initialValues = {
-  descricao: "",
-  valor: 0,
-  operador: "",
-  area: "",
+  Descricao: "",
+  Valor: 0,
+  Beneficiario: "",
 };
 
 const AddSaida = () => {
   const newSaidaStore = useSelector((state) => state.newSaidaStore);
   const { loading, error, success } = newSaidaStore;
   const dispatch = useDispatch();
+  const [formValues, setFormValues] = useState(initialValues);
+  
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     initialValues = values;
-    newSaida(dispatch, initialValues);
+    dispatch(newSaida(initialValues));
+    setSubmitting(false);
+    resetForm();
+    //setTimeout(() => {
+    //  navigate("/entradas/");
+    //}, 2000);
+    setFormValues(initialValues); // Define os valores do formulário como vazios novamente
+    console.log('Form submitted with values:', values);
   };
 
   useEffect(() => {
     if (success) {
-      dispatch({ type: saidaTypes.RESET_INSERT_SAIDA });
       setTimeout(() => {
-        window.location.reload();
+        //window.location.reload();
+        dispatch({ type: saidaTypes.RESET_INSERT_SAIDA });
       }, 3000); // 3000 milissegundos = 3 segundos
     }
   }, [dispatch, success]);
@@ -69,7 +70,7 @@ const AddSaida = () => {
         )}
         {success && (
           <SuccessMessage variant="success">
-            {`${initialValues.descricao} Saida registrada com sucesso`}
+            {`${initialValues.Descricao} Saida registrada com sucesso`}
           </SuccessMessage>
         )}
         <Box
@@ -99,15 +100,15 @@ const AddSaida = () => {
                         margin="normal"
                         required
                         fullWidth
-                        name="descricao"
+                        name="Descricao"
                         label="Descrição"
-                        type="descricao"
-                        id="descricao"
-                        autoComplete="current-descricao"
-                        error={errors.descricao && touched.descricao}
+                        type="Descricao"
+                        id="Descricao"
+                        autoComplete="current-Descricao"
+                        error={errors.Descricao && touched.Descricao}
                       />
                       <ErrorMessage
-                        name="descricao"
+                        name="Descricao"
                         component="div"
                         className="error-message"
                       />
@@ -118,15 +119,15 @@ const AddSaida = () => {
                         margin="normal"
                         required
                         fullWidth
-                        name="operador"
-                        label="operador"
-                        type="operador"
-                        id="operador"
-                        autoComplete="current-operador"
-                        error={errors.operador && touched.operador}
+                        name="Beneficiario"
+                        label="Beneficiario"
+                        type="Beneficiario"
+                        id="Beneficiario"
+                        autoComplete="current-Beneficiario"
+                        error={errors.Beneficiario && touched.Beneficiario}
                       />
                       <ErrorMessage
-                        name="operador"
+                        name="Beneficiario"
                         component="div"
                         className="error-message"
                       />
@@ -135,52 +136,22 @@ const AddSaida = () => {
                         variant="outlined"
                         margin="normal"
                         required
-                        name="valor"
+                        name="Valor"
                         label="Valor"
-                        type="valor"
-                        id="valor"
+                        type="number"
+                        id="Valor"
                         sx={{ minWidth: "14.7rem" }}
                         autoComplete="current-valor"
-                        error={errors.valor && touched.valor}
+                        error={errors.Valor && touched.Valor}
                       />
                       <ErrorMessage
-                        name="valor"
+                        name="Valor"
                         component="div"
                         className="error-message"
                       />
-                      <FormControl sx={{ m: 2, minWidth: "14.7rem" }}>
-                        <InputLabel id="area">Área</InputLabel>
-                        <Field
-                          as={Select}
-                          name="area"
-                          label="Área"
-                          variant="outlined"
-                          required
-                          type="area"
-                          id="area"
-                        >
-                          <MenuItem value="">Área</MenuItem>
-                          <MenuItem value={"Restaurante"}>Restaurante</MenuItem>
-                          <MenuItem value={"Recepção"}>Recepção</MenuItem>
-                        </Field>
-                        <ErrorMessage
-                          name="area"
-                          component="div"
-                          className="error-message"
-                        />
-                      </FormControl>
                     </Box>
                     <Button variant="contained" type="submit" fullWidth>
-                      <Link
-                        style={{
-                          fontStyle: "normal",
-                          textDecorationLine: "none",
-                          color: "#f0f0c0",
-                        }}
-                        to="/"
-                      >
-                        <SaveSharp />
-                      </Link>
+                      Validar
                     </Button>
                   </Form>
                 )}

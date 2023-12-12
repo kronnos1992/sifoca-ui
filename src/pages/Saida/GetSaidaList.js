@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Paginacao from "../../templates/Paginacao";
@@ -52,7 +53,7 @@ const GetSaidasList = () => {
   const [totalValor, setTotalValor] = useState(0); // Variável para armazenar o somatório de valores
 
   const getAllSaidaStore = useSelector((state) => state.getAllSaidaStore);
-  const { saidas, loading, error } = getAllSaidaStore;
+  const { saidas = [], loading, error } = getAllSaidaStore;
 
   // paginacao
   const [page, setPage] = useState(0);
@@ -77,9 +78,9 @@ const GetSaidasList = () => {
 
   useEffect(() => {
     const sum = saidas.reduce((acc, saida) => {
-      return acc + saida.movimento.valor;
+      return acc + saida.Movimento.Valor;
     }, 0);
-    const forSum = new Intl.NumberFormat("pt-BR", {
+    const forSum = new Intl.NumberFormat("pt-ao", {
       style: "currency",
       currency: "AOA", // Se essa é a sua moeda, mantenha como está
     }).format(sum);
@@ -107,6 +108,7 @@ const GetSaidasList = () => {
                 <StyledTableCell>#</StyledTableCell>
                 <StyledTableCell>DESCRIÇÃO</StyledTableCell>
                 <StyledTableCell>VALOR</StyledTableCell>
+                <StyledTableCell>BENEFICIÁRIO</StyledTableCell>
                 <StyledTableCell>RESPONSÁVEL</StyledTableCell>
                 <StyledTableCell>DATA</StyledTableCell>
               </StyledTableRow>
@@ -121,19 +123,21 @@ const GetSaidasList = () => {
                   )
                 : saidas
               ).map((saida) => {
-                const formattedValor = new Intl.NumberFormat("pt-BR", {
+                const formattedValor = new Intl.NumberFormat("pt-ao", {
                   style: "currency",
                   currency: "AOA", // Se essa é a sua moeda, mantenha como está
-                }).format(saida.movimento.valor);
+                }).format(saida.Movimento.Valor);
                 return (
-                  <StyledTableRow key={saida.id}>
-                    <StyledTableCell>{saida.id}</StyledTableCell>
+                  <StyledTableRow key={saida.Id}>
+                    <StyledTableCell>{saida.Id}</StyledTableCell>
                     <StyledTableCell>
-                      {saida.movimento.descricao}
+                      {saida.Movimento.Descricao}
                     </StyledTableCell>
-                    <StyledTableCell>-{formattedValor}</StyledTableCell>
-                    <StyledTableCell>{saida.responsável}</StyledTableCell>
-                    <StyledTableCell>{saida.dataRegistro}</StyledTableCell>
+                    <StyledTableCell>{formattedValor}</StyledTableCell>
+                    
+                    <StyledTableCell>{saida.Beneficiario}</StyledTableCell>
+                    <StyledTableCell>{saida.Responsável}</StyledTableCell>
+                    <StyledTableCell>{saida.DataRegistro}</StyledTableCell>
                   </StyledTableRow>
                 );
               })}

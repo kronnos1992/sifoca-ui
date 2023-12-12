@@ -74,10 +74,10 @@ const GetMovimentosList = () => {
   if (movimentos) {
     // Calcula as somas
     movimentos.forEach((movimento) => {
-      if (movimento.categoria === "ENTRADA") {
-        somaEntradas += movimento.valor;
-      } else if (movimento.categoria === "SAIDA") {
-        somaSaidas += movimento.valor;
+      if (movimento.Categoria === "ENTRADA") {
+        somaEntradas += movimento.Valor;
+      } else if (movimento.Categoria === "SAIDA") {
+        somaSaidas += movimento.Valor;
       }
     });
   }
@@ -121,24 +121,19 @@ const GetMovimentosList = () => {
                   )
                 : movimentos
               ).map((movimento) => {
-                const formattedValor = new Intl.NumberFormat("pt-BR", {
+                const formattedValor = new Intl.NumberFormat("pt-ao", {
                   style: "currency",
                   currency: "AOA", // Se essa é a sua moeda, mantenha como está
-                }).format(movimento.valor);
-
-                const formattedCaixa = new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "AOA", // Se essa é a sua moeda, mantenha como está
-                }).format(movimento.caixa);
+                }).format(movimento.Valor);
                 return (
-                  <StyledTableRow key={movimento.id}>
-                    <StyledTableCell>{movimento.id}</StyledTableCell>
-                    <StyledTableCell>{movimento.categoria}</StyledTableCell>
-                    <StyledTableCell>{movimento.descricao}</StyledTableCell>
+                  <StyledTableRow key={movimento.Id}>
+                    <StyledTableCell>{movimento.Id}</StyledTableCell>
+                    <StyledTableCell>{movimento.Categoria}</StyledTableCell>
+                    <StyledTableCell>{movimento.Descricao}</StyledTableCell>
                     <StyledTableCell>{formattedValor}</StyledTableCell>
-                    <StyledTableCell>{movimento.area}</StyledTableCell>
-                    {/* <StyledTableCell>{formattedCaixa}</StyledTableCell> */}
-                    <StyledTableCell>{movimento.dataRegistro}</StyledTableCell>
+                    <StyledTableCell>{movimento.Area}</StyledTableCell>
+                    {/* <StyledTableCell>{formattedCaixa}</StyledTableCell>  */}
+                    <StyledTableCell>{movimento.DataRegistro}</StyledTableCell>
                   </StyledTableRow>
                 );
               })}
@@ -178,7 +173,7 @@ const GetMovimentosList = () => {
       <Paper elevation={3}>
         <Typography variant="h6" align="center">
           Caiaxa:{" "}
-          {new Intl.NumberFormat("pt-BR", {
+          {new Intl.NumberFormat("pt-ao", {
             style: "currency",
             currency: "AOA",
           }).format(total)}

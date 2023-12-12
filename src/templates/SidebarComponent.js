@@ -23,6 +23,7 @@ import logedAppBarPaths from "./paths/LogedAppBarPaths";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { ExpandMore } from "@mui/icons-material";
 import {handleLogout} from "../redux/actions/authActions"
+import AdminSidePath from "./paths/AdminSidePaths";
 
 const drawerWidth = 300;
 
@@ -180,11 +181,11 @@ export default function SidebarComponent({ children }) {
             (
               <>
               <Typography variant="h6" noWrap component="div" marginLeft="auto">
-              <Button onClick={handleClick}>
-                {infoUsuario.FullUserName} {' '}
-                <ExpandMore />
-              </Button>
-            </Typography>
+                <Button onClick={handleClick}>
+                  {infoUsuario.FullUserName} {console.log(infoUsuario)}
+                  <ExpandMore />
+                </Button>
+              </Typography>
 
             <Menu
               anchorEl={anchorEl}
@@ -222,30 +223,6 @@ export default function SidebarComponent({ children }) {
               </Typography>
             )
           }
-          {/* {
-            infoUsuario && infoUsuario.usuarioAdmin &&
-            (
-                <div className="dropdown">
-                    <Link to="#admin">
-                        Admin {''} <i className="fad fa-caret-down"> </i>
-                    </Link>
-                    <ul className="dropdown-content">
-                        <li>
-                            <Link to="/dashboard">Dashbord {' '}<i className="fad fa-chart-scatter"></i> </Link>
-                        </li>
-                        <li>
-                            <Link to="/listaprodutos">Produtos {' '}<i className="fal fa-shopping-bag"></i> </Link>
-                        </li>
-                        <li>
-                            <Link to="/listapedidos">Pedidos {' '}<i className="fal fa-clipboard-list-check"></i> </Link>
-                        </li>
-                        <li>
-                            <Link to="/listausuarios">Usuarios {' '}<i className="fal fa-users"></i> </Link>
-                        </li>
-                    </ul>
-                </div>
-            )
-          } */}
         </Toolbar>
       </AppBar>
 
@@ -261,10 +238,35 @@ export default function SidebarComponent({ children }) {
           </IconButton>
         </DrawerHeader>
         <Divider />
+        {/* se for administrador */}
+        {
+          infoUsuario && infoUsuario.IsMaster ?(
+            AdminSidePath.map((item) => {
+              return <SubMenu item={item} key={item.title} />;
+            })
+          ):
+          (
+           <></> 
+          )
+        }
 
-        {SidePath.map((item) => {
-          return <SubMenu item={item} key={item.title} />;
-        })}
+        {
+          infoUsuario?(
+            SidePath.map((item) => {
+              return <SubMenu item={item} key={item.title} />;
+            })
+          ):
+          (
+            <Box component="div" sx={{marginTop:"16%", padding:"15%" }}>
+              <Button sx={{backgroundColor:"black"}} >
+                <Link 
+                  style={{textDecoration:"none", color:"silver",}}  
+                  to="/auth/login">VOCÊ NÃO ESTÁ LOGADO, <br /> LOGAR-SE?
+                </Link>
+              </Button> 
+            </Box>
+          )
+        }
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

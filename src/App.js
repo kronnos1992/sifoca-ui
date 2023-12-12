@@ -1,6 +1,6 @@
 import React from "react";
 import {Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { AddEntrada, AddSaida, Entrada, Inicio, Login, Movimento, Saida, SignUp, Users } from "./pages";
+import { AddEntrada, AddSaida, Dashboard, Entrada, Inicio, Login, Movimento, Saida, SignUp, Users } from "./pages";
 import SidebarComponent from "./templates/SidebarComponent";
 
 
@@ -19,6 +19,7 @@ function App() {
             <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/signup" element={<SignUp />} />
             <Route path="/auth/users" element={<Users />} />
+            <Route path="/admin/dashboard" element={<Dashboard />} />
           </Routes>
         </SidebarComponent>
       </Router>

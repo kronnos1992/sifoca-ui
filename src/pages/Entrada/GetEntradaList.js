@@ -109,13 +109,14 @@ const GetEntradasList = () => {
     <>
     {error ? (
       <div style={{ maxWidth: "50rem", padding: "2rem" }}>
-        <MessageError variant="danger">Erro de autenticação. {error}</MessageError>
+        <MessageError variant="danger">{error}</MessageError>
       </div>
       ) : loading ? (
         <div style={{ maxWidth: "50rem", marginLeft: "50%" }}>
         <LoadingMessage></LoadingMessage>
         </div>
         ) : (
+          
           <TableContainer component={Paper}>
             <Paper component="div" sx={{display:"flex"}}>
               <Box component="div">
