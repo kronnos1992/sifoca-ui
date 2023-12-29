@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Paginacao from "../../templates/Paginacao";
 // mui table
 import {
+  Box,
   Button,
   Paper,
   styled,
@@ -16,16 +17,18 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 
 // import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
-import { Add } from "@mui/icons-material";
+import { Add, Search } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { getAllSaidas } from "../../redux/actions/saidaActions";
 import MessageError from "../../templates/Error/MessageError";
 import LoadingMessage from "../../templates/Loading/LoadingMessage";
-
+import * as Yup from "yup";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 // estilos da tabela
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,6 +49,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
+
+const saidaSchema = Yup.object().shape({
+  // ... outros campos de validação
+  dataInicial: Yup.date().required("Campo obrigatório"),
+  dataFinal: Yup.date().required("Campo obrigatório").min(Yup.ref('dataInicial'), "A data final deve ser depois da data inicial"),
+});
+
+let initialValues = {
+  // ... outros valores iniciais
+  dataInicial: '2023-10-20',
+  dataFinal: new Date(),
+};
 
 const GetSaidasList = () => {
   const navigate = useNavigate();
@@ -87,6 +102,19 @@ const GetSaidasList = () => {
     setTotalValor(forSum);
     dispatch(getAllSaidas);
   }, [dispatch]);
+  useEffect(() => {
+    // CALCULAR O TOTAL
+    const sum = saidas ? saidas.reduce((acc, saida) => {
+      return acc + saida.Movimento.Valor;
+    }, 0) : 0;
+    const forSum = new Intl.NumberFormat("pt-AO", {
+      style: "currency",
+      currency: "AOA", // Se essa é a sua moeda, mantenha como está
+    }).format(sum);
+    setTotalValor(forSum);
+    dispatch(getAllSaidas(initialValues.dataInicial, initialValues.dataFinal))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, initialValues.dataInicial, initialValues.dataFinal]);
   return (
     <>
       {error ? (
@@ -99,9 +127,68 @@ const GetSaidasList = () => {
         </div>
       ) : (
         <TableContainer component={Paper}>
-          <Button variant="contained" color="primary" onClick={goTo}>
-            Nova Despesa <Add />
-          </Button>
+        <Paper component="div" sx={{display:"flex"}}>
+            <Box component="div">
+              <Button variant="contained" color="primary" onClick={goTo}>
+                Nova Despesa <Add />
+              </Button>
+            </Box>
+            <Box component="div" sx={{display:"flex", marginLeft:"auto"}}>
+              <Formik 
+                initialValues={initialValues} 
+                onSubmit={(values) => {
+                  initialValues = values;
+                  dispatch(getAllSaidas(values.dataInicial, values.dataFinal))
+                }} 
+                validationSchema={saidaSchema}>
+              {({ errors, touched }) => (
+                <Form >
+                  <Field
+                    as={TextField}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    name="dataInicial"
+                    label="Data Inicial"
+                    type="date"
+                    id="dataInicial"
+                    autoComplete="current-dataInicial"
+                    sx={{margin:"0.1rem"}}
+                    error={errors.dataInicial && touched.dataInicial}
+                    />
+                  <ErrorMessage
+                    name="dataInicial"
+                    component="div"
+                    className="error-message"
+                  />
+              
+                  <Field
+                    as={TextField}
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    name="dataFinal"
+                    label="Data Final"
+                    type="date"
+                    id="dataFinal"
+                    sx={{margin:"0.1rem"}}
+                    autoComplete="current-dataFinal"
+                    error={errors.dataFinal && touched.dataFinal}
+                  />
+                  <ErrorMessage
+                    name="dataFinal"
+                    component="div"
+                    className="error-message"
+                  />
+              
+                  <Button type="submit" variant="contained" sx={{minHeight:"3.5rem"}}>
+                      PROCURAR <Search />
+                  </Button>
+                </Form>
+              )}
+              </Formik>
+            </Box>
+          </Paper>
           <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
             <TableHead>
               <StyledTableRow>

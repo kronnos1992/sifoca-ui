@@ -182,7 +182,7 @@ export default function SidebarComponent({ children }) {
               <>
               <Typography variant="h6" noWrap component="div" marginLeft="auto">
                 <Button onClick={handleClick}>
-                  {infoUsuario.FullUserName} {console.log(infoUsuario)}
+                  {infoUsuario.FullUserName}
                   <ExpandMore />
                 </Button>
               </Typography>

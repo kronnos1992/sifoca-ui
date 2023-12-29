@@ -175,7 +175,7 @@ const GetEntradasList = () => {
                     <Button type="submit" variant="contained" sx={{minHeight:"3.5rem"}}>
                         PROCURAR <Search />
                     </Button>
-                </Form>
+                  </Form>
                 )}
                 </Formik>
               </Box>

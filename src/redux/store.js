@@ -17,6 +17,7 @@ const reducer = combineReducers({
 
   // entradas store
   getAllEntradaStore: entrada.getAllEntradasReducer,
+  getEntradaStore: entrada.getEntradasReducer,
   newEntradaStore: entrada.newEntradaReducer,
   // deleteCountryStore: country.deleteCountryReducer,
   // updateCountryStore: country.updateCountryReducer,
@@ -30,7 +31,9 @@ const reducer = combineReducers({
   // auth store
   userLoginStore: login.loginReducer,
   addUserStore: login.registroReducer,
-  getAllUserStore: login.getAllUsersReducer
+  getAllUserStore: login.getAllUsersReducer,
+  // updateCountryStore: country.updateCountryReducer,
+
   // updateCountryStore: country.updateCountryReducer,
 });
 
